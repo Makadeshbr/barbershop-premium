@@ -70,9 +70,9 @@ export function NewsletterSection() {
             <Image
               src="/images/icons/logo_semfundo.png"
               alt="Império Barbearia"
-              width={120}
-              height={48}
-              className="h-12 w-auto object-contain"
+              width={80}
+              height={80}
+              className="h-20 w-20 object-contain"
             />
           </div>
 

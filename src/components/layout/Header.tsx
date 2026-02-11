@@ -120,9 +120,9 @@ export function Header() {
               <Image
                 src="/images/icons/logo_semfundo.png"
                 alt="Império Barbearia"
-                width={160}
-                height={48}
-                className="h-12 w-auto"
+                width={64}
+                height={64}
+                className="h-14 w-14 lg:h-16 lg:w-16 object-contain"
                 priority
               />
             </button>
