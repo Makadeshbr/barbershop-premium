@@ -1,26 +1,181 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-gold: #C5A55A;
+  --color-gold-light: #D4B96E;
+  --color-gold-dark: #A88B3D;
+  --color-gold-50: #FBF7ED;
+  --color-gold-100: #F5EDD5;
+  --color-gold-200: #EBDAAB;
+  --color-gold-300: #DFC67F;
+  --color-gold-400: #D4B96E;
+  --color-gold-500: #C5A55A;
+  --color-gold-600: #A88B3D;
+  --color-gold-700: #7F6A2E;
+  --color-gold-800: #554720;
+  --color-gold-900: #2B2410;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-brown: #3D2315;
+  --color-brown-light: #8B5E3C;
+  --color-brown-dark: #2A1810;
+  --color-brown-leather: #6B3A1F;
+  --color-brown-warm: #8B5E3C;
+
+  --color-dark: #1A1A1A;
+  --color-dark-deep: #0D0D0D;
+  --color-dark-card: #1F1F1F;
+  --color-dark-border: #2A2A2A;
+
+  --color-cream: #F5F0E0;
+  --color-cream-light: #FAF8F0;
+  --color-cream-dark: #E8E0C8;
+
+  --font-heading: var(--font-playfair);
+  --font-body: var(--font-inter);
+  --font-accent: var(--font-cormorant);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-pulse-gold: pulseGold 2s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes pulseGold {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(197, 165, 90, 0.4); }
+    50% { box-shadow: 0 0 0 15px rgba(197, 165, 90, 0); }
   }
 }
 
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  font-family: var(--font-body), sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: rgba(197, 165, 90, 0.3);
+  color: #FFFFFF;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0D0D0D;
+  border-left: 1px solid rgba(197, 165, 90, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #C5A55A 0%, #A88B3D 100%);
+  border-radius: 5px;
+  border: 2px solid #0D0D0D;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #D4B96E 0%, #C5A55A 100%);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #C5A55A 0%, #D4B96E 50%, #A88B3D 100%);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #C5A55A 0%, #D4B96E 50%, #A88B3D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gold-divider {
+  height: 2px;
+  width: 4rem;
+  background: linear-gradient(135deg, #C5A55A 0%, #D4B96E 50%, #A88B3D 100%);
+}
+
+.glass-card {
+  background: rgba(31, 31, 31, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid #2A2A2A;
+  border-radius: 12px;
+}
+
+.section-padding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .section-padding {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section-padding {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+}
+
+.btn-shimmer:hover::after {
+  transform: translateX(100%);
+  transition: transform 0.6s ease;
+}
+
+@keyframes progressFill {
+  from { width: 0%; }
+  to { width: 100%; }
 }

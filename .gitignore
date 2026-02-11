@@ -33,9 +33,26 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# newsletter subscribers data
+/data
+
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# reference images and loose files (not part of the project)
+/Assets/
+/Nova pasta/
+/videos/
+/src/remotion/
+*.tmp
+nul
+referencia.webp
+cortando.png
+Logo_bigode.png
+logo*.jpg
+logo*.png
+Gemini_Generated_Image_*
