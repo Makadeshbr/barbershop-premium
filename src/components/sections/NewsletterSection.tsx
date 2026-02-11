@@ -70,9 +70,9 @@ export function NewsletterSection() {
             <Image
               src="/images/icons/logo_semfundo.png"
               alt="Império Barbearia"
-              width={80}
-              height={80}
-              className="h-20 w-20 object-contain"
+              width={160}
+              height={160}
+              className="h-40 w-40 object-contain"
             />
           </div>
 
@@ -114,9 +114,8 @@ export function NewsletterSection() {
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`mt-4 text-sm font-body ${
-                status === "success" ? "text-green-400" : "text-red-400"
-              }`}
+              className={`mt-4 text-sm font-body ${status === "success" ? "text-green-400" : "text-red-400"
+                }`}
             >
               {message}
             </motion.p>

@@ -30,9 +30,9 @@ export function Footer() {
             <Image
               src="/images/icons/logo_semfundo.png"
               alt="Império Barbearia"
-              width={96}
-              height={96}
-              className="h-24 w-24 object-contain"
+              width={140}
+              height={140}
+              className="h-36 w-36 object-contain"
             />
             <h3 className="text-gold font-heading text-xl">
               Império Barbearia
