@@ -118,9 +118,9 @@ export function Header() {
             {/* Logo */}
             <button className="flex-shrink-0 cursor-pointer" onClick={() => scrollToSection("#inicio")}>
               <Image
-                src="/images/icons/logo_oficial_icon.png"
+                src="/images/icons/logo_semfundo.png"
                 alt="Império Barbearia"
-                width={120}
+                width={160}
                 height={48}
                 className="h-12 w-auto"
                 priority

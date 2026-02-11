@@ -53,6 +53,9 @@ nul
 referencia.webp
 cortando.png
 Logo_bigode.png
-logo*.jpg
-logo*.png
+/logo*.jpg
+/logo*.png
 Gemini_Generated_Image_*
+
+.vercel
+.env*.local
