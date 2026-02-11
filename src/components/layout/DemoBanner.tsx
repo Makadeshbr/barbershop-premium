@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { X, ExternalLink } from "lucide-react";
 
-const WHATSAPP_CONTACT =
-  "https://wa.me/5514999999999?text=Olá! Tenho interesse no site de barbearia e no app de agendamento."; // [PREENCHA] número real
+const CONTACT_URL = "https://allanfelipef.dev/";
 
 export function DemoBanner() {
   const [visible, setVisible] = useState(true);
@@ -26,7 +25,7 @@ export function DemoBanner() {
 
         <div className="flex items-center gap-2 flex-shrink-0">
           <a
-            href={WHATSAPP_CONTACT}
+            href={CONTACT_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-[#C5A55A] text-[#0D0D0D] text-xs sm:text-sm font-bold px-4 sm:px-6 py-2 sm:py-2.5 rounded-full hover:bg-[#D4B96E] transition-colors whitespace-nowrap inline-flex items-center gap-1.5"
