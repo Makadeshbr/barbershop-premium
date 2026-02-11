@@ -28,11 +28,11 @@ export function Footer() {
           {/* Column 1 - Brand */}
           <div className="flex flex-col gap-4">
             <Image
-              src="/images/icons/logo_oficial_icon.png"
+              src="/images/icons/logo_semfundo.png"
               alt="Império Barbearia"
-              width={80}
+              width={160}
               height={80}
-              className="h-20 w-20 object-contain"
+              className="h-20 w-auto object-contain"
             />
             <h3 className="text-gold font-heading text-xl">
               Império Barbearia

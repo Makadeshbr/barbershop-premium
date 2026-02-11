@@ -68,11 +68,11 @@ export function NewsletterSection() {
         <ScrollReveal variants={fadeInUp}>
           <div className="flex justify-center mb-6">
             <Image
-              src="/images/icons/logo_oficial_icon.png"
+              src="/images/icons/logo_semfundo.png"
               alt="Império Barbearia"
-              width={48}
+              width={120}
               height={48}
-              className="object-contain"
+              className="h-12 w-auto object-contain"
             />
           </div>
 
