@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { X, Instagram, Facebook, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_LINKS, SOCIAL_LINKS, WHATSAPP_LINK } from "@/lib/constants";
@@ -91,12 +91,23 @@ const socialsVariants = {
   },
 };
 
+/**
+ * Menu mobile fullscreen com focus trap e suporte a teclado.
+ *
+ * Acessibilidade (Ação 9):
+ * - Focus é movido para o botão de fechar ao abrir
+ * - Focus é restaurado ao elemento que abriu o menu ao fechar
+ * - Tecla Escape fecha o menu
+ * - role="dialog" e aria-modal para screen readers
+ */
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   const lenis = useLenis();
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const scrollToSection = useCallback((href: string) => {
     onClose();
-    // Small delay to let menu close animation start before scrolling
+    // Pequeno delay para a animação de fechamento iniciar antes do scroll
     setTimeout(() => {
       const target = document.querySelector<HTMLElement>(href);
       if (!target) return;
@@ -108,6 +119,52 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     }, 100);
   }, [lenis, onClose]);
 
+  // Ação 9: Focus management — move focus ao abrir, restaura ao fechar
+  useEffect(() => {
+    if (isOpen) {
+      // Salva o elemento que tinha focus antes de abrir o menu
+      previousFocusRef.current = document.activeElement as HTMLElement;
+
+      // Move focus para o botão de fechar após a animação
+      const timer = setTimeout(() => {
+        closeButtonRef.current?.focus();
+      }, 100);
+
+      return () => clearTimeout(timer);
+    } else if (previousFocusRef.current) {
+      // Restaura o focus ao fechar
+      previousFocusRef.current.focus();
+      previousFocusRef.current = null;
+    }
+  }, [isOpen]);
+
+  // Ação 9: Fechar menu com tecla Escape
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // Bloqueia scroll do body quando o menu está aberto
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -117,6 +174,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           initial="hidden"
           animate="visible"
           exit="exit"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu de navegação"
         >
           {/* Backdrop */}
           <motion.div
@@ -124,7 +184,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             onClick={onClose}
           />
 
-          {/* Menu Panel */}
+          {/* Painel do Menu */}
           <motion.div
             className="absolute inset-0 flex flex-col items-center justify-center"
             variants={menuVariants}
@@ -132,8 +192,9 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             animate="visible"
             exit="exit"
           >
-            {/* Close Button */}
+            {/* Botão Fechar — recebe focus ao abrir */}
             <button
+              ref={closeButtonRef}
               onClick={onClose}
               className="absolute top-5 right-5 text-cream hover:text-gold transition-colors p-2"
               aria-label="Fechar menu"
@@ -141,7 +202,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               <X className="w-7 h-7" />
             </button>
 
-            {/* Navigation Links */}
+            {/* Links de Navegação */}
             <nav className="flex flex-col items-center gap-6">
               {NAV_LINKS.map((link, i) => (
                 <motion.div
@@ -162,7 +223,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               ))}
             </nav>
 
-            {/* CTA Button */}
+            {/* Botão CTA */}
             <motion.div
               className="mt-10"
               variants={ctaVariants}
@@ -181,7 +242,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               </a>
             </motion.div>
 
-            {/* Social Icons */}
+            {/* Ícones Sociais */}
             <motion.div
               className="mt-8 flex items-center gap-5"
               variants={socialsVariants}

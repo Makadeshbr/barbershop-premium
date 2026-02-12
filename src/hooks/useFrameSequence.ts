@@ -4,6 +4,9 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { getFramePath } from "@/lib/utils";
 import { INTRO_FRAME_START, INTRO_FRAME_END } from "@/lib/constants";
 
+/** Diretório padrão dos frames de introdução */
+const INTRO_FRAMES_PATH = "/images/intro";
+
 export function useFrameSequence(canvasRef: React.RefObject<HTMLCanvasElement | null>) {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -28,7 +31,7 @@ export function useFrameSequence(canvasRef: React.RefObject<HTMLCanvasElement | 
           setProgress(Math.round((loaded / frameCount) * 100));
           resolve(img);
         };
-        img.src = getFramePath(i);
+        img.src = getFramePath(INTRO_FRAMES_PATH, i);
       });
       loadPromises.push(promise);
     }

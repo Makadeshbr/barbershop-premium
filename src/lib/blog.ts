@@ -1,13 +1,32 @@
+/**
+ * Dados e funções de acesso para os posts do blog.
+ *
+ * Os posts estão armazenados como constantes neste módulo.
+ * O conteúdo usa formato markdown-like que é renderizado
+ * pela página blog/[slug]/page.tsx.
+ *
+ * @module blog
+ */
+
+/** Estrutura de dados de um post do blog */
 export interface BlogPost {
+  /** Identificador URL-safe do post */
   slug: string;
+  /** Título completo do post */
   title: string;
+  /** Categoria do post (ex: "Cabelo", "Barba", "Tratamento") */
   category: string;
+  /** Caminho para a imagem/ícone do post */
   image: string;
+  /** Resumo curto exibido nos cards de listagem */
   excerpt: string;
+  /** Conteúdo completo do post em formato markdown-like */
   content: string;
+  /** Tempo estimado de leitura em minutos */
   readTime: number;
 }
 
+/** Mapa de posts indexado por slug para acesso O(1) */
 export const BLOG_POSTS: Record<string, BlogPost> = {
   "manter-corte-perfeito": {
     slug: "manter-corte-perfeito",
@@ -128,10 +147,22 @@ O ideal é fazer barboterapia a cada 2 a 4 semanas, dependendo da velocidade de 
   },
 };
 
+/**
+ * Busca um post do blog pelo slug.
+ *
+ * @param slug - Identificador URL-safe do post
+ * @returns O post correspondente ou undefined se não encontrado
+ */
 export function getBlogPost(slug: string): BlogPost | undefined {
   return BLOG_POSTS[slug];
 }
 
+/**
+ * Retorna todos os slugs disponíveis para geração de páginas estáticas.
+ * Usado pelo generateStaticParams() do Next.js para SSG.
+ *
+ * @returns Array com todos os slugs de posts
+ */
 export function getAllSlugs(): string[] {
   return Object.keys(BLOG_POSTS);
 }

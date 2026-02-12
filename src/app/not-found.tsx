@@ -21,12 +21,11 @@ export default function NotFound() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         aria-hidden="true"
         onCanPlay={handleReady}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-out ${
-          videoReady ? "opacity-40" : "opacity-0"
-        }`}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-out ${videoReady ? "opacity-40" : "opacity-0"
+          }`}
       >
         <source src="/videos/video2.mp4" type="video/mp4" />
       </video>
@@ -39,19 +38,19 @@ export default function NotFound() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
-        <h1 className="font-[family-name:var(--font-playfair)] text-8xl md:text-9xl font-bold text-white">
+        <h1 className="font-heading text-8xl md:text-9xl font-bold text-white">
           404
         </h1>
-        <div className="h-0.5 w-16 mx-auto my-6 bg-gradient-to-r from-[#C5A55A] via-[#D4B96E] to-[#A88B3D]" />
-        <p className="font-[family-name:var(--font-cormorant)] text-2xl md:text-3xl italic text-[#C5A55A] mb-4">
+        <div className="h-0.5 w-16 mx-auto my-6 gold-gradient" />
+        <p className="font-accent text-2xl md:text-3xl italic text-gold mb-4">
           Página não encontrada
         </p>
-        <p className="text-[#F5F0E0]/60 max-w-md mx-auto mb-10">
+        <p className="text-cream/60 max-w-md mx-auto mb-10">
           A página que você procura não existe ou foi movida.
         </p>
         <Link
           href="/"
-          className="btn-shimmer inline-flex items-center justify-center rounded-md font-body tracking-wide bg-[#C5A55A] text-[#0D0D0D] font-semibold px-8 py-4 text-lg hover:bg-[#D4B96E] transition-colors duration-200"
+          className="btn-shimmer inline-flex items-center justify-center rounded-md font-body tracking-wide bg-gold text-dark-deep font-semibold px-8 py-4 text-lg hover:bg-gold-light transition-colors duration-200"
         >
           Voltar ao Início
         </Link>

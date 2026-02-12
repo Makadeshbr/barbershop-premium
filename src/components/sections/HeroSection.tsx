@@ -71,7 +71,7 @@ export function HeroSection() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         aria-hidden="true"
         onCanPlay={handleVideoReady}
         className={`absolute inset-0 w-full h-full object-contain will-change-transform transition-opacity duration-[1500ms] ease-out ${videoReady ? "opacity-100" : "opacity-0"

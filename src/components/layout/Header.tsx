@@ -1,22 +1,42 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Instagram, Facebook, MessageCircle, Menu, Phone, Mail } from "lucide-react";
 import { NAV_LINKS, SOCIAL_LINKS, WHATSAPP_LINK, BUSINESS_HOURS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import { useLenis } from "@/hooks/useSmoothScroll";
+import { useActiveSection } from "@/hooks/useActiveSection";
 import { MobileMenu } from "./MobileMenu";
 
+/**
+ * IDs das seções da página principal, extraídos dos links de navegação.
+ * Usados pelo IntersectionObserver para detectar a seção visível.
+ */
+const SECTION_IDS = NAV_LINKS.map((link) => link.href.replace("#", ""));
+
+/**
+ * Header principal do site com barra de informações, navegação desktop/mobile,
+ * e destaque automático do link ativo via IntersectionObserver.
+ *
+ * Comportamento:
+ * - Esconde ao rolar para baixo, reaparece ao rolar para cima
+ * - Muda de transparente para blur+fundo ao rolar
+ * - Destaca automaticamente o link da seção visível na viewport
+ */
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("#inicio");
   const { scrollDirection, scrollY } = useScrollDirection();
   const lenis = useLenis();
 
+  // Ação 8: IntersectionObserver para detectar a seção visível automaticamente
+  const activeSection = useActiveSection(SECTION_IDS);
+
+  // Fallback para #inicio caso nenhuma seção esteja visível (topo da página)
+  const activeLink = activeSection || "#inicio";
+
   const scrollToSection = useCallback((href: string) => {
-    setActiveLink(href);
     const target = document.querySelector<HTMLElement>(href);
     if (!target) return;
     if (lenis) {
@@ -29,13 +49,16 @@ export function Header() {
   const isScrolled = scrollY > 100;
   const isHidden = scrollDirection === "down" && scrollY > 100;
 
-  const todayIndex = new Date().getDay();
-  const daysMap = [6, 0, 1, 2, 3, 4, 5];
-  const todayHours = BUSINESS_HOURS[daysMap[todayIndex]];
+  /** Calcula o horário de funcionamento do dia atual */
+  const todayHours = useMemo(() => {
+    const todayIndex = new Date().getDay();
+    const daysMap = [6, 0, 1, 2, 3, 4, 5];
+    return BUSINESS_HOURS[daysMap[todayIndex]];
+  }, []);
 
   return (
     <>
-      {/* Info Bar */}
+      {/* Barra de informações — visível apenas em desktop */}
       <div
         className={cn(
           "hidden lg:block fixed top-0 left-0 right-0 z-50 bg-dark-deep text-xs text-cream/60 transition-transform duration-300",
@@ -43,7 +66,7 @@ export function Header() {
         )}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-16 flex items-center justify-between py-2">
-          {/* Left - Email & Phone */}
+          {/* Esquerda — Email e Telefone */}
           <div className="flex items-center gap-4">
             <a
               href="mailto:contato@imperiobarbearia.com"
@@ -61,14 +84,14 @@ export function Header() {
             </a>
           </div>
 
-          {/* Center - Hours */}
+          {/* Centro — Horário */}
           <div className="flex items-center gap-1.5">
             <span>
               Hoje ({todayHours.day}): {todayHours.hours}
             </span>
           </div>
 
-          {/* Right - Social Icons */}
+          {/* Direita — Ícones Sociais */}
           <div className="flex items-center gap-3">
             <a
               href={SOCIAL_LINKS.instagram}
@@ -101,7 +124,7 @@ export function Header() {
         </div>
       </div>
 
-      {/* Main Navbar */}
+      {/* Navbar Principal */}
       <header
         className={cn(
           "fixed left-0 right-0 z-50 transition-all duration-300",
@@ -127,7 +150,7 @@ export function Header() {
               />
             </button>
 
-            {/* Desktop Navigation - Center */}
+            {/* Navegação Desktop — Centro */}
             <ul className="hidden lg:flex items-center gap-8">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
@@ -146,7 +169,7 @@ export function Header() {
               ))}
             </ul>
 
-            {/* Desktop Right Side - CTA + Divider + Social */}
+            {/* Desktop — CTA + Divisor + Social */}
             <div className="hidden lg:flex items-center gap-4">
               <a
                 href={WHATSAPP_LINK}
@@ -157,10 +180,10 @@ export function Header() {
                 Agendar Horário
               </a>
 
-              {/* Vertical Divider */}
+              {/* Divisor Vertical */}
               <div className="w-px h-6 bg-cream/20" />
 
-              {/* Social Icons */}
+              {/* Ícones Sociais */}
               <div className="flex items-center gap-3">
                 <a
                   href={SOCIAL_LINKS.instagram}
@@ -192,7 +215,7 @@ export function Header() {
               </div>
             </div>
 
-            {/* Mobile Hamburger Button */}
+            {/* Botão Hambúrguer Mobile */}
             <button
               className="lg:hidden text-cream p-2 hover:text-gold transition-colors"
               onClick={() => setMobileMenuOpen(true)}
@@ -204,7 +227,7 @@ export function Header() {
         </nav>
       </header>
 
-      {/* Mobile Menu */}
+      {/* Menu Mobile */}
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
     </>
   );
