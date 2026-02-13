@@ -30,11 +30,9 @@ export function Header() {
   const { scrollDirection, scrollY } = useScrollDirection();
   const lenis = useLenis();
 
-  // Ação 8: IntersectionObserver para detectar a seção visível automaticamente
-  const activeSection = useActiveSection(SECTION_IDS);
-
-  // Fallback para #inicio caso nenhuma seção esteja visível (topo da página)
-  const activeLink = activeSection || "#inicio";
+  // IntersectionObserver para detectar a seção visível automaticamente
+  // Hook já retorna "#inicio" como default — sem necessidade de fallback
+  const activeLink = useActiveSection(SECTION_IDS);
 
   const scrollToSection = useCallback((href: string) => {
     const target = document.querySelector<HTMLElement>(href);
@@ -61,7 +59,7 @@ export function Header() {
       {/* Barra de informações — visível apenas em desktop */}
       <div
         className={cn(
-          "hidden lg:block fixed top-0 left-0 right-0 z-50 bg-dark-deep text-xs text-cream/60 transition-transform duration-300",
+          "hidden lg:block fixed top-0 left-0 right-0 z-50 bg-dark-deep text-xs text-cream/60 transition-transform duration-300 will-change-transform",
           isHidden && "-translate-y-full"
         )}
       >
@@ -127,7 +125,7 @@ export function Header() {
       {/* Navbar Principal */}
       <header
         className={cn(
-          "fixed left-0 right-0 z-50 transition-all duration-300",
+          "fixed left-0 right-0 z-50 transition-all duration-300 will-change-transform",
           "lg:top-[32px]",
           "top-0",
           isScrolled

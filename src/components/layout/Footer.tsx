@@ -33,6 +33,7 @@ export function Footer() {
               width={140}
               height={140}
               className="h-36 w-36 object-contain"
+              loading="lazy"
             />
             <h3 className="text-gold font-heading text-xl">
               Império Barbearia

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { PRICING_MENU, WHATSAPP_LINK } from "@/lib/constants";
@@ -10,7 +11,44 @@ import { StaggerContainer } from "@/components/animations/StaggerContainer";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 
+/**
+ * URL do embed do Google Maps.
+ * Extraído como constante para evitar recriação em cada render
+ * e facilitar configuração futura.
+ */
+const MAPS_EMBED_URL =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d58902.12!2d-48.92!3d-23.1!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c01c8e3b3beb67%3A0xd0e40d3c7e02720d!2sAvar%C3%A9%2C%20SP!5e0!3m2!1sen!2sbr!4v1700000000000";
+
 export function PricingSection() {
+  /**
+   * Lazy loading do iframe do Google Maps via IntersectionObserver.
+   * O iframe só é renderizado quando a seção entra no viewport,
+   * evitando ~200KB de requisição de rede no carregamento inicial.
+   */
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [isMapVisible, setIsMapVisible] = useState(false);
+
+  useEffect(() => {
+    const container = mapContainerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsMapVisible(true);
+          observer.disconnect();
+        }
+      },
+      {
+        // Carrega quando estiver a 200px de distância do viewport
+        rootMargin: "200px 0px",
+      }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="agendar" className="py-20 lg:py-32 bg-dark">
       <div className="max-w-7xl mx-auto section-padding">
@@ -64,14 +102,29 @@ export function PricingSection() {
                 />
               </div>
 
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d58902.12!2d-48.92!3d-23.1!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c01c8e3b3beb67%3A0xd0e40d3c7e02720d!2sAvar%C3%A9%2C%20SP!5e0!3m2!1sen!2sbr!4v1700000000000"
-                title="Localização Império Barbearia - Avaré, SP"
-                className="w-full h-48 sm:h-56 md:h-64 rounded-xl border-2 border-gold/20 mt-6"
-                loading="lazy"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+              {/* Container com observer para lazy load do mapa */}
+              <div ref={mapContainerRef} className="w-full mt-6">
+                {isMapVisible ? (
+                  <iframe
+                    src={MAPS_EMBED_URL}
+                    title="Localização Império Barbearia - Avaré, SP"
+                    className="w-full h-48 sm:h-56 md:h-64 rounded-xl border-2 border-gold/20"
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                ) : (
+                  /* Placeholder enquanto o mapa não carrega — mantém layout estável */
+                  <div
+                    className="w-full h-48 sm:h-56 md:h-64 rounded-xl border-2 border-gold/20 bg-dark-card flex items-center justify-center"
+                    aria-hidden="true"
+                  >
+                    <span className="text-cream/30 text-sm font-body">
+                      Carregando mapa...
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </ScrollReveal>
         </div>

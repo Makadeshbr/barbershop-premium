@@ -76,6 +76,18 @@ body {
   color: #FFFFFF;
   font-family: var(--font-body), sans-serif;
   overflow-x: hidden;
+  /* Otimiza tap delay em dispositivos móveis */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/**
+ * Containment CSS para o elemento main.
+ * Limita o escopo de recalculations de layout e style,
+ * evitando que mudanças em seções individuais invalidem
+ * toda a árvore de renderização.
+ */
+main {
+  contain: layout style;
 }
 
 ::selection {
